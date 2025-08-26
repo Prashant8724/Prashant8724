@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Prashant Patel</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap
   <style>
     body {
       margin: 0;
@@ -12,7 +12,6 @@
       background-color: #f0f4f8;
       overflow-x: hidden;
     }
-
     header {
       background: linear-gradient(to right, #6366f1, #3b82f6);
       color: white;
@@ -27,7 +26,6 @@
       height: 70px;
       z-index: 1000;
     }
-
     #sidebar {
       background-color: #1e293b;
       width: 220px;
@@ -38,11 +36,9 @@
       padding-top: 1rem;
       transition: transform 0.3s ease;
     }
-
     #sidebar.collapsed {
       transform: translateX(-220px);
     }
-
     #sidebar a {
       display: block;
       color: white;
@@ -50,12 +46,10 @@
       text-decoration: none;
       font-weight: 600;
     }
-
     #sidebar a:hover,
     #sidebar a.active {
       background-color: #3b82f6;
     }
-
     #toggleBtn {
       background-color: #3b82f6;
       color: white;
@@ -64,17 +58,14 @@
       cursor: pointer;
       border-radius: 5px;
     }
-
     main {
       margin-left: 220px;
       padding: 90px 2rem 2rem;
       transition: margin-left 0.3s ease;
     }
-
     main.collapsed {
       margin-left: 0;
     }
-
     .section {
       background-color: white;
       padding: 1.5rem;
@@ -82,18 +73,15 @@
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
-
     .section h2 {
       color: #3b82f6;
       margin-bottom: 1rem;
     }
-
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1rem;
     }
-
     .card {
       background-color: #f9fafb;
       padding: 1rem;
@@ -101,16 +89,13 @@
       border-left: 5px solid #6366f1;
       transition: transform 0.3s;
     }
-
     .card:hover {
       transform: scale(1.02);
     }
-
     input[type="text"] {
       padding: 0.5rem;
       margin-right: 0.5rem;
     }
-
     button {
       padding: 0.5rem 1rem;
       background-color: #3b82f6;
@@ -119,11 +104,9 @@
       border-radius: 5px;
       cursor: pointer;
     }
-
     button:hover {
       background-color: #2563eb;
     }
-
     .profile-pic {
       width: 40px;
       height: 40px;
@@ -131,18 +114,15 @@
       background-color: #fff;
       margin-left: 1rem;
     }
-
     footer {
       text-align: center;
       padding: 1rem;
       background-color: #e2e8f0;
       margin-left: 220px;
     }
-
     footer.collapsed {
       margin-left: 0;
     }
-
     @media (max-width: 768px) {
       #sidebar {
         transform: translateX(-220px);
@@ -229,7 +209,6 @@
       event.preventDefault();
       document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
       document.getElementById(id).style.display = 'block';
-
       document.querySelectorAll('#sidebar a').forEach(link => link.classList.remove('active'));
       event.target.classList.add('active');
     }
