@@ -1,367 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Prashant Patel — Dashboard</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Prashant Patel</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/feather-icons"></script>
   <style>
     :root{
-      --bg:linear-gradient(135deg,#e0e7ff,#f0f4ff);
+      --bg: linear-gradient(135deg,#e0e7ff,#f0f4ff);
       --fg:#111827;
-      --card:rgba(255,255,255,0.88);
+      --card-bg: rgba(255,255,255,0.8);
       --primary:#3b82f6;
-      --muted:rgba(0,0,0,0.55);
-      --font:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      --accent:#2563eb;
+      --btn-text:#fff;
+      --font:'Inter',sans-serif;
     }
     [data-theme="dark"]{
-      --bg:linear-gradient(135deg,#0f172a,#1e293b);
-      --fg:#f3f4f6;
-      --card:rgba(20,28,40,0.65);
+      --bg: linear-gradient(135deg,#0f172a,#1e293b);
+      --fg:#f9fafb;
+      --card-bg: rgba(30,41,59,0.8);
       --primary:#60a5fa;
-      --muted:rgba(255,255,255,0.75);
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *{box-sizing:border-box;margin:0;padding:0}
     body{
-      margin:0;font-family:var(--font);color:var(--fg);
-      background:var(--bg);padding:20px;transition:.28s;
+      font-family:var(--font);color:var(--fg);background:var(--bg);
+      min-height:100vh;padding:0;
+      transition:background .3s ease,color .3s ease;
     }
-    .topbar{max-width:920px;margin:0 auto 18px;display:flex;justify-content:space-between;align-items:center;gap:12px}
-    .brand{display:flex;flex-direction:column}
-    .brand h1{font-size:22px;margin:0;font-weight:700}
-    .brand p{margin:4px 0 0;color:var(--muted);font-size:13px}
-    .controls{display:flex;align-items:center;gap:10px}
-    .profile{width:56px;height:56px;border-radius:50%;overflow:hidden;border:3px solid var(--primary);box-shadow:0 6px 18px rgba(0,0,0,0.12);flex-shrink:0;background:#fff}
-    .profile img{width:100%;height:100%;object-fit:cover;display:block}
-    .theme-toggle{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--card);cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
-    .container{max-width:920px;margin:0 auto}
-    .tabs{display:flex;justify-content:center;gap:10px;margin-bottom:14px}
-    .tab{padding:8px 14px;border-radius:999px;background:var(--card);cursor:pointer;font-weight:600;transition:.22s;box-shadow:0 4px 12px rgba(0,0,0,0.04)}
-    .tab.active{background:var(--primary);color:#fff;box-shadow:0 8px 30px rgba(0,0,0,0.12)}
-    .panel{display:none;background:var(--card);border-radius:12px;padding:16px;box-shadow:0 12px 36px rgba(0,0,0,0.06)}
-    .panel.active{display:block}
-    .panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-    .add-row{display:flex;gap:8px}
-    .add-row input{flex:1;padding:8px 10px;border-radius:8px;border:1px solid rgba(0,0,0,0.07);outline:none}
-    .add-row button{padding:8px 10px;border-radius:8px;border:none;background:var(--primary);color:#fff;cursor:pointer}
-    ul.list{list-style:none;padding:0;margin:8px 0 0}
-    ul.list li.item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px;border-radius:8px;margin-bottom:8px;background:linear-gradient(180deg,rgba(255,255,255,0.5),rgba(255,255,255,0.35));transition:transform .18s,box-shadow .18s,opacity .18s}
-    [data-theme="dark"] ul.list li.item{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))}
-    li.item.dragging{opacity:.5;transform:scale(.995)}
-    .item .left{display:flex;align-items:center;gap:12px;flex:1}
-    .item .left .text{font-size:15px}
-    .item.done .text{opacity:.6;text-decoration:line-through}
-    .actions{display:flex;gap:8px;align-items:center}
-    .icon-btn{background:transparent;border:none;padding:6px;border-radius:8px;cursor:pointer;display:grid;place-items:center}
-    .icon-btn:hover{background:rgba(0,0,0,0.04)}
-    [data-theme="dark"] .icon-btn:hover{background:rgba(255,255,255,0.03)}
-    .fab{position:fixed;right:22px;bottom:22px;background:var(--primary);color:#fff;border:none;padding:12px;border-radius:50%;box-shadow:0 18px 50px rgba(59,130,246,0.16);cursor:pointer}
-    .fade-in{animation:fadeIn .26s ease}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-    @media (max-width:720px){.topbar{padding:0 8px}.tabs{flex-wrap:wrap}}
+    #loginOverlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.65);
+      display:flex;align-items:center;justify-content:center;z-index:3000;
+    }
+    #loginBox{
+      background:#fff;padding:20px;border-radius:12px;text-align:center;max-width:340px;width:90%;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+    }
+    #loginBox h2{margin-bottom:12px;font-size:18px}
+    #loginBox input{width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;margin-bottom:10px}
+    #loginBox button{width:100%;padding:10px;border-radius:8px;border:none;background:var(--primary);color:var(--btn-text);cursor:pointer}
+    #errorMsg{color:#c62828;margin-top:8px;min-height:18px}
+    .shake{animation:shake .36s}
+    @keyframes shake{0%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}100%{transform:translateX(0)}}
+
+    .topbar{position:fixed;top:12px;right:12px;display:flex;align-items:center;gap:10px;z-index:2000}
+    .toggle{width:44px;height:44px;border-radius:50%;background:var(--card-bg);display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.12);font-size:20px}
+    .profile{width:48px;height:48px;border-radius:50%;overflow:hidden;border:2px solid var(--primary)}
+    .profile img{width:100%;height:100%;object-fit:cover}
+    .logout{padding:8px 14px;border-radius:8px;background:#ef4444;color:#fff;border:none;cursor:pointer;font-weight:600}
+
+    .container{max-width:920px;margin:110px auto 40px;padding:0 16px}
+    h1{text-align:center;font-size:26px;margin-bottom:6px}
+    p.location{text-align:center;color:rgba(0,0,0,.6);margin-bottom:16px}
+
+    .tabs{display:flex;justify-content:center;gap:8px;margin-bottom:14px}
+    .tab{padding:8px 14px;border-radius:999px;background:var(--card-bg);cursor:pointer;border:1px solid rgba(0,0,0,.06);font-weight:600}
+    .tab.active{background:var(--primary);color:#fff;box-shadow:0 8px 30px rgba(59,130,246,0.15)}
+
+    .section{display:none;background:var(--card-bg);border-radius:12px;padding:18px;box-shadow:0 12px 36px rgba(0,0,0,0.08);margin-bottom:16px}
+    .section.active{display:block}
+
+    ul{list-style:none;padding:0;margin:8px 0 0}
+    li.item{
+      display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;
+      background:rgba(255,255,255,0.06);margin-bottom:8px;border:1px solid rgba(0,0,0,0.04)
+    }
+    [data-theme="dark"] li.item{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)}
+    li.item.done span{text-decoration:line-through;opacity:.6}
+
+    .actions button{margin-left:6px;border:none;background:none;cursor:pointer;padding:6px;border-radius:8px}
+    .actions button:hover{background:rgba(0,0,0,0.04)}
+    .add-btn{float:right;padding:8px 12px;border-radius:8px;border:none;background:var(--primary);color:var(--btn-text);cursor:pointer}
+
+    footer{text-align:center;color:rgba(0,0,0,.6);margin-top:8px;font-size:13px}
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="brand">
+  <div id="loginOverlay">
+    <div id="loginBox">
+      <h2>Enter Password</h2>
+      <input id="passwordInput" type="password" placeholder="Password" />
+      <div id="errorMsg"></div>
+      <button id="unlockBtn">Unlock</button>
+    </div>
+  </div>
+
+  <div id="dashboard" style="display:none;">
+    <div class="topbar">
+      <div class="toggle" id="themeToggle" title="Toggle theme">☀️</div>
+      <button class="logout" id="logoutBtn">Logout</button>
+      <div class="profile" title="Profile"><img src="https://i.pravatar.cc/100?img=3" alt="profile"></div>
+    </div>
+
+    <div class="container">
       <h1>Prashant Patel</h1>
-      <p>Bulandshahr, Uttar Pradesh</p>
-    </div>
-    <div class="controls">
-      <div class="theme-toggle" id="themeToggle" title="Toggle theme"><i data-feather="moon" id="themeIcon"></i></div>
-      <div class="profile" title="Profile"><img id="profilePic" src="https://i.pravatar.cc/150?img=3" alt="profile"></div>
+      <p class="location">Bulandshahr, Uttar Pradesh</p>
+
+      <div class="tabs">
+        <div class="tab active" data-tab="focus">Focus</div>
+        <div class="tab" data-tab="exams">Exams</div>
+        <div class="tab" data-tab="goals">Goals</div>
+        <div class="tab" data-tab="files">Files</div>
+      </div>
+
+      <div id="focus" class="section active">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <h2>Today's Focus</h2>
+          <button class="add-btn" onclick="addItem('focusList')">+ Add</button>
+        </div>
+        <ul id="focusList"></ul>
+      </div>
+
+      <div id="exams" class="section">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <h2>Upcoming Exams</h2>
+          <button class="add-btn" onclick="addItem('examsList')">+ Add</button>
+        </div>
+        <ul id="examsList"></ul>
+      </div>
+
+      <div id="goals" class="section">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <h2>Goals</h2>
+          <button class="add-btn" onclick="addItem('goalsList')">+ Add</button>
+        </div>
+        <ul id="goalsList"></ul>
+      </div>
+
+      <div id="files" class="section">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <h2>My Files</h2>
+          <button class="add-btn" onclick="addItem('filesList')">+ Add</button>
+        </div>
+        <ul id="filesList"></ul>
+      </div>
+
+      <footer>© 2025 Prashant Patel</footer>
     </div>
   </div>
 
-  <div class="container">
-    <div class="tabs" role="tablist">
-      <div class="tab active" data-tab="focus">Focus</div>
-      <div class="tab" data-tab="exams">Exams</div>
-      <div class="tab" data-tab="goals">Goals</div>
-      <div class="tab" data-tab="files">Files</div>
-    </div>
+<script>
+  const data = {
+    focus: ["Physics: Revise Electrostatics","Maths: Practice Integration Problems"],
+    exams: ["Maths","NDA EXAM on 14","English","Chemistry","IP","Physics"],
+    goals: ["Score 90%+ in Board Exams"],
+    files: ["[Your files here]"]
+  };
 
-    <div id="focusPanel" class="panel active" data-section="focus">
-      <div class="panel-head">
-        <div><strong>Today's Focus</strong></div>
-        <div class="add-row" style="max-width:420px">
-          <input id="focusInput" placeholder="Add task and press Enter" />
-          <button data-add="focus">Add</button>
-        </div>
-      </div>
-      <ul id="focus-list" class="list" aria-label="Focus list"></ul>
-    </div>
-
-    <div id="examsPanel" class="panel" data-section="exams">
-      <div class="panel-head">
-        <div><strong>Upcoming Exams</strong></div>
-        <div class="add-row" style="max-width:420px">
-          <input id="examsInput" placeholder="Add exam (e.g. NDA - 14th)" />
-          <button data-add="exams">Add</button>
-        </div>
-      </div>
-      <ul id="exams-list" class="list" aria-label="Exams list"></ul>
-    </div>
-
-    <div id="goalsPanel" class="panel" data-section="goals">
-      <div class="panel-head">
-        <div><strong>Goals</strong></div>
-        <div class="add-row" style="max-width:420px">
-          <input id="goalsInput" placeholder="Add goal" />
-          <button data-add="goals">Add</button>
-        </div>
-      </div>
-      <ul id="goals-list" class="list" aria-label="Goals list"></ul>
-    </div>
-
-    <div id="filesPanel" class="panel" data-section="files">
-      <div class="panel-head">
-        <div><strong>My Files</strong></div>
-        <div class="add-row" style="max-width:420px">
-          <input id="filesInput" placeholder="Add file name or URL" />
-          <button data-add="files">Add</button>
-        </div>
-      </div>
-      <ul id="files-list" class="list" aria-label="Files list"></ul>
-    </div>
-
-    <button class="fab" id="globalFab" title="Add to current tab"><i data-feather="plus"></i></button>
-
-    <footer style="text-align:center;margin-top:18px;color:var(--muted)">© 2025 Prashant Patel</footer>
-  </div>
-
-  <script>
-    const STORAGE_KEY = 'pp_dashboard_v5';
-    const sections = ['focus','exams','goals','files'];
-    const defaultData = {
-      focus:[
-        {id:genId(),text:'Physics: Revise Electrostatics',done:false},
-        {id:genId(),text:'Maths: Practice Integration Problems',done:false}
-      ],
-      exams:[
-        {id:genId(),text:'Maths',done:false},
-        {id:genId(),text:'NDA EXAM on 14',done:false},
-        {id:genId(),text:'English',done:false},
-        {id:genId(),text:'Chemistry',done:false},
-        {id:genId(),text:'IP',done:false},
-        {id:genId(),text:'Physics',done:false}
-      ],
-      goals:[
-        {id:genId(),text:'Score 90%+ in Board Exams',done:false}
-      ],
-      files:[
-        {id:genId(),text:'[Your files here]',done:false}
-      ]
-    };
-    function genId(){return Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8)}
-
-    function norm(s){ return String(s||'').trim().replace(/\s+/g,' ').toLowerCase() }
-
-    function load(){
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if(!raw) return deepClone(defaultData);
-        const parsed = JSON.parse(raw);
-        // ensure arrays exist
-        sections.forEach(s=>{ if(!Array.isArray(parsed[s])) parsed[s]=[] });
-        // Merge: add any missing default items (by text) at the beginning
-        sections.forEach(s=>{
-          const existingTexts = parsed[s].map(it => norm(it.text));
-          defaultData[s].slice().reverse().forEach(defItem=>{
-            if(!existingTexts.includes(norm(defItem.text))){
-              parsed[s].unshift(deepClone(defItem));
-            }
-          });
-        });
-        return parsed;
-      }catch(e){
-        return deepClone(defaultData);
-      }
-    }
-    function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
-    function deepClone(v){ return JSON.parse(JSON.stringify(v)) }
-
-    let data = load();
-
-    function $(sel, ctx=document){ return ctx.querySelector(sel); }
-    function $all(sel, ctx=document){ return Array.from(ctx.querySelectorAll(sel)); }
-
-    function createIconButton(iconName, title, onClick){
-      const btn = document.createElement('button');
-      btn.className = 'icon-btn';
-      btn.title = title;
-      btn.innerHTML = `<i data-feather="${iconName}"></i>`;
-      btn.addEventListener('click', e=>{ e.stopPropagation(); onClick(); });
-      return btn;
-    }
-
-    // Setup list drop-at-end handlers once
-    sections.forEach(section=>{
-      const ul = $(`#${section}-list`);
-      ul.addEventListener('dragover', e=> e.preventDefault());
-      ul.addEventListener('drop', e=>{
-        e.preventDefault();
-        const raw = e.dataTransfer.getData('application/json');
-        if(!raw) return;
-        const payload = JSON.parse(raw);
-        if(payload.section !== section) return;
-        moveItemToEnd(section, payload.id);
-      });
-    });
-
-    function renderList(section){
-      const ul = $(`#${section}-list`);
-      ul.innerHTML = '';
-      data[section].forEach((item)=>{
-        const li = document.createElement('li');
-        li.className = 'item fade-in';
-        li.draggable = true;
-        li.dataset.id = item.id;
-        if(item.done) li.classList.add('done');
-
-        const left = document.createElement('div'); left.className='left';
-        const text = document.createElement('div'); text.className='text'; text.textContent = item.text;
-        left.appendChild(text);
-
-        const actions = document.createElement('div'); actions.className='actions';
-        const doneBtn = createIconButton('check', 'Toggle done', ()=>toggleDone(section, item.id));
-        const editBtn = createIconButton('edit-2', 'Edit', ()=>startEdit(section, item.id));
-        const delBtn  = createIconButton('trash-2', 'Delete', ()=>deleteItem(section, item.id));
-        actions.append(doneBtn, editBtn, delBtn);
-
-        li.append(left, actions);
-
-        li.addEventListener('dragstart', e=>{
-          e.dataTransfer.setData('application/json', JSON.stringify({section, id: item.id}));
-          li.classList.add('dragging');
-        });
-        li.addEventListener('dragend', ()=> li.classList.remove('dragging'));
-        li.addEventListener('dragover', e=> e.preventDefault());
-        li.addEventListener('drop', e=>{
-          e.preventDefault();
-          const raw = e.dataTransfer.getData('application/json');
-          if(!raw) return;
-          const payload = JSON.parse(raw);
-          if(payload.section !== section) return;
-          moveItemWithin(section, payload.id, item.id);
-        });
-
+  function renderAll(){
+    for(const key of Object.keys(data)){
+      const ul = document.getElementById(key + "List");
+      ul.innerHTML = "";
+      data[key].forEach((txt, i) => {
+        const li = document.createElement("li");
+        li.className = "item";
+        const span = document.createElement("span");
+        span.textContent = txt;
+        const actions = document.createElement("div");
+        actions.className = "actions";
+        const tick = document.createElement("button"); tick.innerHTML = "✔"; tick.onclick = ()=> { li.classList.add("done"); };
+        const cross = document.createElement("button"); cross.innerHTML = "✖"; cross.onclick = ()=> { li.classList.remove("done"); };
+        const edit = document.createElement("button"); edit.innerHTML = "✏"; edit.onclick = ()=> {
+          const nt = prompt("Edit item:", data[key][i]);
+          if(nt!==null && nt.trim()!==""){ data[key][i] = nt.trim(); renderAll(); }
+        };
+        const del = document.createElement("button"); del.innerHTML = "🗑"; del.onclick = ()=> {
+          if(confirm("Delete item?")) { data[key].splice(i,1); renderAll(); }
+        };
+        actions.appendChild(tick); actions.appendChild(cross); actions.appendChild(edit); actions.appendChild(del);
+        li.appendChild(span); li.appendChild(actions);
         ul.appendChild(li);
       });
-      feather.replace();
     }
+  }
 
-    function renderAll(){ sections.forEach(s=>renderList(s)); }
-
-    function addItem(section, text){
-      if(!text || !text.trim()) return;
-      data[section].push({id:genId(),text:text.trim(),done:false});
-      save(); renderList(section);
-    }
-
-    function startEdit(section, id){
-      const ul = $(`#${section}-list`);
-      const li = ul.querySelector(`[data-id="${id}"]`);
-      if(!li) return;
-      const span = li.querySelector('.text');
-      const old = span.textContent;
-      const input = document.createElement('input');
-      input.type='text'; input.value = old; input.style.width='100%'; input.style.padding='6px'; input.style.borderRadius='6px'; input.style.border='1px solid rgba(0,0,0,0.08)';
-      span.replaceWith(input);
-      input.focus(); input.setSelectionRange(0, input.value.length);
-      function commit(){
-        const v = input.value.trim();
-        if(v){
-          const idx = data[section].findIndex(x=>x.id===id);
-          if(idx>-1) data[section][idx].text = v;
-        }
-        save(); renderList(section);
-      }
-      input.addEventListener('keydown', e=>{ if(e.key==='Enter'){commit()} else if(e.key==='Escape'){renderList(section)} });
-      input.addEventListener('blur', commit);
-    }
-
-    function deleteItem(section, id){
-      const idx = data[section].findIndex(x=>x.id===id);
-      if(idx===-1) return;
-      data[section].splice(idx,1);
-      save(); renderList(section);
-    }
-
-    function toggleDone(section, id){
-      const idx = data[section].findIndex(x=>x.id===id);
-      if(idx===-1) return;
-      data[section][idx].done = !data[section][idx].done;
-      save(); renderList(section);
-    }
-
-    function moveItemWithin(section, fromId, toId){
-      const arr = data[section];
-      const fromIdx = arr.findIndex(x=>x.id===fromId);
-      const toIdx = arr.findIndex(x=>x.id===toId);
-      if(fromIdx<0||toIdx<0||fromIdx===toIdx) return;
-      const [m] = arr.splice(fromIdx,1);
-      const insertAt = toIdx < fromIdx ? toIdx : toIdx+1;
-      arr.splice(insertAt,0,m);
-      save(); renderList(section);
-    }
-    function moveItemToEnd(section, fromId){
-      const arr = data[section];
-      const fromIdx = arr.findIndex(x=>x.id===fromId);
-      if(fromIdx<0) return;
-      const [m] = arr.splice(fromIdx,1);
-      arr.push(m);
-      save(); renderList(section);
-    }
-
-    // UI wiring: tabs
-    document.addEventListener('click', (e)=>{
-      const t = e.target;
-      if(t.matches('.tab') || t.closest('.tab')){
-        const tab = t.closest('.tab');
-        const key = tab.dataset.tab;
-        document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active', x===tab));
-        document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.dataset.section===key));
-      }
-    });
-
-    // add buttons
-    document.querySelectorAll('[data-add]').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const s = btn.dataset.add;
-        const input = $(`#${s}Input`);
-        if(input && input.value.trim()){ addItem(s, input.value.trim()); input.value=''; input.focus(); }
-      });
-    });
-
-    // enter to add
-    ['focus','exams','goals','files'].forEach(s=>{
-      const input = $(`#${s}Input`);
-      if(input) input.addEventListener('keydown', e=>{ if(e.key==='Enter'){ if(input.value.trim()){ addItem(s, input.value.trim()); input.value=''; } }});
-    });
-
-    // global FAB focuses active input
-    document.getElementById('globalFab').addEventListener('click', ()=>{
-      const activeTab = document.querySelector('.tab.active').dataset.tab;
-      const input = $(`#${activeTab}Input`);
-      if(input){ input.focus(); input.scrollIntoView({behavior:'smooth',block:'center'}); }
-    });
-
-    // theme toggle
-    const themeToggle = document.getElementById('themeToggle');
-    let isDark = localStorage.getItem('pp_theme') === 'dark';
-    function applyTheme(d){
-      document.documentElement.setAttribute('data-theme', d? 'dark' : ''); localStorage.setItem('pp_theme', d? 'dark' : 'light');
-      document.getElementById('themeIcon').setAttribute('data-feather', d? 'sun' : 'moon'); feather.replace();
-    }
-    themeToggle.addEventListener('click', ()=>{ isDark = !isDark; applyTheme(isDark); });
-    applyTheme(isDark);
-
-    // initial render & ensure feather icons
+  function addItem(listId){
+    const key = listId.endsWith("List") ? listId.slice(0,-4) : listId;
+    const t = prompt("Enter new item:");
+    if(!t) return;
+    data[key].push(t);
     renderAll();
-    feather.replace();
-  </script>
+  }
+
+  document.querySelectorAll(".tab").forEach(tab=>{
+    tab.addEventListener("click", ()=>{
+      document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+      tab.classList.add("active");
+      const target = tab.dataset.tab;
+      document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+      document.getElementById(target).classList.add("active");
+    });
+  });
+
+  const themeToggle = document.getElementById("themeToggle");
+  let dark = false;
+  themeToggle.addEventListener("click", ()=>{
+    dark = !dark;
+    if(dark){
+      document.documentElement.setAttribute("data-theme","dark");
+      themeToggle.textContent = "🌙";
+    } else {
+      document.documentElement.removeAttribute("data-theme");
+      themeToggle.textContent = "0";
+    }
+  });
+
+  document.getElementById("logoutBtn").addEventListener("click", ()=>{
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("loginOverlay").style.display = "flex";
+    document.getElementById("passwordInput").value = "";
+  });
+
+  const unlockBtn = document.getElementById("unlockBtn");
+  const pwdInput = document.getElementById("passwordInput");
+  const errorMsg = document.getElementById("errorMsg");
+  unlockBtn.addEventListener("click", checkPassword);
+  pwdInput.addEventListener("keyup", e => { if(e.key === "Enter") checkPassword(); });
+
+  function checkPassword(){
+    const v = pwdInput.value;
+    if(v === "India@123"){
+      document.getElementById("loginOverlay").style.display = "none";
+      document.getElementById("dashboard").style.display = "block";
+      renderAll();
+    } else {
+      errorMsg.textContent = "Incorrect Password!";
+      const box = document.getElementById("loginBox");
+      box.classList.add("shake");
+      setTimeout(()=>box.classList.remove("shake"), 360);
+    }
+  }
+</script>
 </body>
 </html>
