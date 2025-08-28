@@ -1,283 +1,367 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Prashant Patel</title>
-  https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Prashant Patel — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/feather-icons"></script>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background-color: #f0f4f8;
+    :root{
+      --bg:linear-gradient(135deg,#e0e7ff,#f0f4ff);
+      --fg:#111827;
+      --card:rgba(255,255,255,0.88);
+      --primary:#3b82f6;
+      --muted:rgba(0,0,0,0.55);
+      --font:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
     }
-
-    header {
-      background: linear-gradient(to right, #6366f1, #3b82f6);
-      color: white;
-      padding: 1rem 2rem;
-      display: flex;
-           position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 70px;
-      z-index: 1000;
+    [data-theme="dark"]{
+      --bg:linear-gradient(135deg,#0f172a,#1e293b);
+      --fg:#f3f4f6;
+      --card:rgba(20,28,40,0.65);
+      --primary:#60a5fa;
+      --muted:rgba(255,255,255,0.75);
     }
-
-    #sidebar {
-      background-color: #1e293b;
-      width: 220px;
-      height: calc(100vh - 70px);
-      position: fixed;
-      top: 70px;
-      left: 0;
-      padding-top: 1rem;
-      transition: transform 0.3s ease;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;font-family:var(--font);color:var(--fg);
+      background:var(--bg);padding:20px;transition:.28s;
     }
-
-    #sidebar.collapsed {
-      transform: translateX(-220px);
-    }
-
-    #sidebar a {
-      display: block;
-      color: white;
-      padding: 1rem 2rem;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    #sidebar a:hover,
-    #sidebar a.active {
-      background-color: #3b82f6;
-    }
-
-    #toggleBtn {
-      background-color: white;
-      color: #3b82f6;
-      border: none;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      border-radius: 5px;
-      font-weight: bold;
-    }
-
-    main {
-      margin-left: 220px;
-      padding: 90px 4rem 3rem;
-      transition: margin-left 0.5s ease;
-    }
-
-    main.collapsed {
-      margin-left: 0;
-    }
-
-    .section {
-      background-color: white;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-
-    .section h2 {
-      color: #3b82f6;
-      margin-bottom: 1rem;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-    }
-
-    .card {
-      background-color: #f9fafb;
-      padding: 1rem;
-      border-radius: 8px;
-      border-left: 5px solid #6366f1;
-      transition: transform 0.3s;
-    }
-
-    .card:hover {
-      transform: scale(1.02);
-    }
-
-    input[type="text"] {
-      padding: 0.5rem;
-      margin-right: 0.5rem;
-      border: 1px solid #cbd5e1;
-      border-radius: 5px;
-    }
-
-    button {
-      padding: 0.5rem 1rem;
-      background-color: #3b82f6;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    button:hover {
-      background-color: #2563eb;
-    }
-
-    .profile-pic {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      overflow: hidden;
-      margin-left: 1rem;
-    }
-
-    .profile-pic img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background-color: #e2e8f0;
-      margin-left: 220px;
-    }
-
-    footer.collapsed {
-      margin-left: 0;
-    }
-
-    @media (max-width: 768px) {
-      #sidebar {
-        transform: translateX(-220px);
-      }
-
-      #sidebar.active {
-        transform: translateX(0);
-      }
-
-      main, footer {
-        margin-left: 0;
-      }
-    }
+    .topbar{max-width:920px;margin:0 auto 18px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .brand{display:flex;flex-direction:column}
+    .brand h1{font-size:22px;margin:0;font-weight:700}
+    .brand p{margin:4px 0 0;color:var(--muted);font-size:13px}
+    .controls{display:flex;align-items:center;gap:10px}
+    .profile{width:56px;height:56px;border-radius:50%;overflow:hidden;border:3px solid var(--primary);box-shadow:0 6px 18px rgba(0,0,0,0.12);flex-shrink:0;background:#fff}
+    .profile img{width:100%;height:100%;object-fit:cover;display:block}
+    .theme-toggle{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--card);cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+    .container{max-width:920px;margin:0 auto}
+    .tabs{display:flex;justify-content:center;gap:10px;margin-bottom:14px}
+    .tab{padding:8px 14px;border-radius:999px;background:var(--card);cursor:pointer;font-weight:600;transition:.22s;box-shadow:0 4px 12px rgba(0,0,0,0.04)}
+    .tab.active{background:var(--primary);color:#fff;box-shadow:0 8px 30px rgba(0,0,0,0.12)}
+    .panel{display:none;background:var(--card);border-radius:12px;padding:16px;box-shadow:0 12px 36px rgba(0,0,0,0.06)}
+    .panel.active{display:block}
+    .panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .add-row{display:flex;gap:8px}
+    .add-row input{flex:1;padding:8px 10px;border-radius:8px;border:1px solid rgba(0,0,0,0.07);outline:none}
+    .add-row button{padding:8px 10px;border-radius:8px;border:none;background:var(--primary);color:#fff;cursor:pointer}
+    ul.list{list-style:none;padding:0;margin:8px 0 0}
+    ul.list li.item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px;border-radius:8px;margin-bottom:8px;background:linear-gradient(180deg,rgba(255,255,255,0.5),rgba(255,255,255,0.35));transition:transform .18s,box-shadow .18s,opacity .18s}
+    [data-theme="dark"] ul.list li.item{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))}
+    li.item.dragging{opacity:.5;transform:scale(.995)}
+    .item .left{display:flex;align-items:center;gap:12px;flex:1}
+    .item .left .text{font-size:15px}
+    .item.done .text{opacity:.6;text-decoration:line-through}
+    .actions{display:flex;gap:8px;align-items:center}
+    .icon-btn{background:transparent;border:none;padding:6px;border-radius:8px;cursor:pointer;display:grid;place-items:center}
+    .icon-btn:hover{background:rgba(0,0,0,0.04)}
+    [data-theme="dark"] .icon-btn:hover{background:rgba(255,255,255,0.03)}
+    .fab{position:fixed;right:22px;bottom:22px;background:var(--primary);color:#fff;border:none;padding:12px;border-radius:50%;box-shadow:0 18px 50px rgba(59,130,246,0.16);cursor:pointer}
+    .fade-in{animation:fadeIn .26s ease}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+    @media (max-width:720px){.topbar{padding:0 8px}.tabs{flex-wrap:wrap}}
   </style>
 </head>
 <body>
-  <header>
-    <div style="display: flex; align-items: center;">
-      <button id="toggleBtn" onclick="toggleSidebar()">☰</button>
-      <h1 style="margin-left: 1rem;">Prashant Patel</h1>
+  <div class="topbar">
+    <div class="brand">
+      <h1>Prashant Patel</h1>
+      <p>Bulandshahr, Uttar Pradesh</p>
     </div>
-    <div style="display: flex; align-items: center;">
-      <div>Bulandshahr, Uttar Pradesh</div>
-      <div class="profile-pic">
-        <img src="OIP.jpg" alt="Profile Photo">
-      </div>
+    <div class="controls">
+      <div class="theme-toggle" id="themeToggle" title="Toggle theme"><i data-feather="moon" id="themeIcon"></i></div>
+      <div class="profile" title="Profile"><img id="profilePic" src="https://i.pravatar.cc/150?img=3" alt="profile"></div>
     </div>
-  </header>
-
-  <div id="sidebar">
-    <a href="#" onclick="showSection(event, 'focus')" class="active">Today's Focus</a>
-    <a href="#" onclick="showSection(event, 'exams')">Upcoming Exams</a>
-    <a href="#" onclick="showSection(event, 'goals')">Goals</a>
-    <a href="#" onclick="showSection(event, 'files')">My Files</a>
   </div>
 
-  <main id="mainContent">
-    <div id="focus" class="section">
-      <h2>🎯 Today's Focus</h2>
-      <div class="grid" id="taskList">
-        <div class="card">Physics: Revise Electrostatics</div>
-        <div class="card">Maths: Practice Integration Problems</div>
+  <div class="container">
+    <div class="tabs" role="tablist">
+      <div class="tab active" data-tab="focus">Focus</div>
+      <div class="tab" data-tab="exams">Exams</div>
+      <div class="tab" data-tab="goals">Goals</div>
+      <div class="tab" data-tab="files">Files</div>
+    </div>
+
+    <div id="focusPanel" class="panel active" data-section="focus">
+      <div class="panel-head">
+        <div><strong>Today's Focus</strong></div>
+        <div class="add-row" style="max-width:420px">
+          <input id="focusInput" placeholder="Add task and press Enter" />
+          <button data-add="focus">Add</button>
+        </div>
       </div>
-      <input type="text" id="taskInput" placeholder="Add new task">
-      <button onclick="addTask()">Add Task</button>
+      <ul id="focus-list" class="list" aria-label="Focus list"></ul>
     </div>
 
-    <div id="exams" class="section" style="display:none">
-      <h2>📅 Upcoming Exams</h2>
-      <div class="grid">
-        <div class="card">Maths</div>
-        <div class="card">NDA EXAM on 14</div>
-        <div class="card">English</div>
-        <div class="card">Chemistry</div>
-        <div class="card">IP</div>
-        <div class="card">Physics</div>
+    <div id="examsPanel" class="panel" data-section="exams">
+      <div class="panel-head">
+        <div><strong>Upcoming Exams</strong></div>
+        <div class="add-row" style="max-width:420px">
+          <input id="examsInput" placeholder="Add exam (e.g. NDA - 14th)" />
+          <button data-add="exams">Add</button>
+        </div>
       </div>
+      <ul id="exams-list" class="list" aria-label="Exams list"></ul>
     </div>
 
-    <div id="goals" class="section" style="display:none">
-      <h2>🚀 Goals</h2>
-      <ul id="goalList">
-        <li>Score 90%+ in Board Exams</li>
-      </ul>
-      <input type="text" id="goalInput" placeholder="Add new goal">
-      <button onclick="addGoal()">Add Goal</button>
+    <div id="goalsPanel" class="panel" data-section="goals">
+      <div class="panel-head">
+        <div><strong>Goals</strong></div>
+        <div class="add-row" style="max-width:420px">
+          <input id="goalsInput" placeholder="Add goal" />
+          <button data-add="goals">Add</button>
+        </div>
+      </div>
+      <ul id="goals-list" class="list" aria-label="Goals list"></ul>
     </div>
 
-    <div id="files" class="section" style="display:none">
-      <h2>📁 My Files</h2>
-      <input type="file" id="fileInput" multiple>
-      <ul id="fileList"></ul>
+    <div id="filesPanel" class="panel" data-section="files">
+      <div class="panel-head">
+        <div><strong>My Files</strong></div>
+        <div class="add-row" style="max-width:420px">
+          <input id="filesInput" placeholder="Add file name or URL" />
+          <button data-add="files">Add</button>
+        </div>
+      </div>
+      <ul id="files-list" class="list" aria-label="Files list"></ul>
     </div>
-  </main>
 
-  <footer id="footer">
-    &copy; 2025 Prashant Patel
-  </footer>
+    <button class="fab" id="globalFab" title="Add to current tab"><i data-feather="plus"></i></button>
+
+    <footer style="text-align:center;margin-top:18px;color:var(--muted)">© 2025 Prashant Patel</footer>
+  </div>
 
   <script>
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('collapsed');
-      document.getElementById('mainContent').classList.toggle('collapsed');
-      document.getElementById('footer').classList.toggle('collapsed');
-    }
+    const STORAGE_KEY = 'pp_dashboard_v5';
+    const sections = ['focus','exams','goals','files'];
+    const defaultData = {
+      focus:[
+        {id:genId(),text:'Physics: Revise Electrostatics',done:false},
+        {id:genId(),text:'Maths: Practice Integration Problems',done:false}
+      ],
+      exams:[
+        {id:genId(),text:'Maths',done:false},
+        {id:genId(),text:'NDA EXAM on 14',done:false},
+        {id:genId(),text:'English',done:false},
+        {id:genId(),text:'Chemistry',done:false},
+        {id:genId(),text:'IP',done:false},
+        {id:genId(),text:'Physics',done:false}
+      ],
+      goals:[
+        {id:genId(),text:'Score 90%+ in Board Exams',done:false}
+      ],
+      files:[
+        {id:genId(),text:'[Your files here]',done:false}
+      ]
+    };
+    function genId(){return Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8)}
 
-    function showSection(event, id) {
-      event.preventDefault();
-      document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
-      document.getElementById(id).style.display = 'block';
-      document.querySelectorAll('#sidebar a').forEach(link => link.classList.remove('active'));
-      event.target.classList.add('active');
-    }
+    function norm(s){ return String(s||'').trim().replace(/\s+/g,' ').toLowerCase() }
 
-    function addTask() {
-      const input = document.getElementById('taskInput');
-      if (input.value.trim()) {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.textContent = input.value;
-        document.getElementById('taskList').appendChild(card);
-        input.value = '';
+    function load(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return deepClone(defaultData);
+        const parsed = JSON.parse(raw);
+        // ensure arrays exist
+        sections.forEach(s=>{ if(!Array.isArray(parsed[s])) parsed[s]=[] });
+        // Merge: add any missing default items (by text) at the beginning
+        sections.forEach(s=>{
+          const existingTexts = parsed[s].map(it => norm(it.text));
+          defaultData[s].slice().reverse().forEach(defItem=>{
+            if(!existingTexts.includes(norm(defItem.text))){
+              parsed[s].unshift(deepClone(defItem));
+            }
+          });
+        });
+        return parsed;
+      }catch(e){
+        return deepClone(defaultData);
       }
     }
+    function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+    function deepClone(v){ return JSON.parse(JSON.stringify(v)) }
 
-    function addGoal() {
-      const input = document.getElementById('goalInput');
-      if (input.value.trim()) {
-        const li = document.createElement('li');
-        li.textContent = input.value;
-        document.getElementById('goalList').appendChild(li);
-        input.value = '';
-      }
+    let data = load();
+
+    function $(sel, ctx=document){ return ctx.querySelector(sel); }
+    function $all(sel, ctx=document){ return Array.from(ctx.querySelectorAll(sel)); }
+
+    function createIconButton(iconName, title, onClick){
+      const btn = document.createElement('button');
+      btn.className = 'icon-btn';
+      btn.title = title;
+      btn.innerHTML = `<i data-feather="${iconName}"></i>`;
+      btn.addEventListener('click', e=>{ e.stopPropagation(); onClick(); });
+      return btn;
     }
 
-    document.getElementById('fileInput').addEventListener('change', function() {
-      const list = document.getElementById('fileList');
-      list.innerHTML = '';
-      Array.from(this.files).forEach(file => {
-        const li = document.createElement('li');
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(file);
-        link.textContent = file.name;
-        link.target = '_blank';
-        li.appendChild(link);
-        list.appendChild(li);
+    // Setup list drop-at-end handlers once
+    sections.forEach(section=>{
+      const ul = $(`#${section}-list`);
+      ul.addEventListener('dragover', e=> e.preventDefault());
+      ul.addEventListener('drop', e=>{
+        e.preventDefault();
+        const raw = e.dataTransfer.getData('application/json');
+        if(!raw) return;
+        const payload = JSON.parse(raw);
+        if(payload.section !== section) return;
+        moveItemToEnd(section, payload.id);
       });
     });
+
+    function renderList(section){
+      const ul = $(`#${section}-list`);
+      ul.innerHTML = '';
+      data[section].forEach((item)=>{
+        const li = document.createElement('li');
+        li.className = 'item fade-in';
+        li.draggable = true;
+        li.dataset.id = item.id;
+        if(item.done) li.classList.add('done');
+
+        const left = document.createElement('div'); left.className='left';
+        const text = document.createElement('div'); text.className='text'; text.textContent = item.text;
+        left.appendChild(text);
+
+        const actions = document.createElement('div'); actions.className='actions';
+        const doneBtn = createIconButton('check', 'Toggle done', ()=>toggleDone(section, item.id));
+        const editBtn = createIconButton('edit-2', 'Edit', ()=>startEdit(section, item.id));
+        const delBtn  = createIconButton('trash-2', 'Delete', ()=>deleteItem(section, item.id));
+        actions.append(doneBtn, editBtn, delBtn);
+
+        li.append(left, actions);
+
+        li.addEventListener('dragstart', e=>{
+          e.dataTransfer.setData('application/json', JSON.stringify({section, id: item.id}));
+          li.classList.add('dragging');
+        });
+        li.addEventListener('dragend', ()=> li.classList.remove('dragging'));
+        li.addEventListener('dragover', e=> e.preventDefault());
+        li.addEventListener('drop', e=>{
+          e.preventDefault();
+          const raw = e.dataTransfer.getData('application/json');
+          if(!raw) return;
+          const payload = JSON.parse(raw);
+          if(payload.section !== section) return;
+          moveItemWithin(section, payload.id, item.id);
+        });
+
+        ul.appendChild(li);
+      });
+      feather.replace();
+    }
+
+    function renderAll(){ sections.forEach(s=>renderList(s)); }
+
+    function addItem(section, text){
+      if(!text || !text.trim()) return;
+      data[section].push({id:genId(),text:text.trim(),done:false});
+      save(); renderList(section);
+    }
+
+    function startEdit(section, id){
+      const ul = $(`#${section}-list`);
+      const li = ul.querySelector(`[data-id="${id}"]`);
+      if(!li) return;
+      const span = li.querySelector('.text');
+      const old = span.textContent;
+      const input = document.createElement('input');
+      input.type='text'; input.value = old; input.style.width='100%'; input.style.padding='6px'; input.style.borderRadius='6px'; input.style.border='1px solid rgba(0,0,0,0.08)';
+      span.replaceWith(input);
+      input.focus(); input.setSelectionRange(0, input.value.length);
+      function commit(){
+        const v = input.value.trim();
+        if(v){
+          const idx = data[section].findIndex(x=>x.id===id);
+          if(idx>-1) data[section][idx].text = v;
+        }
+        save(); renderList(section);
+      }
+      input.addEventListener('keydown', e=>{ if(e.key==='Enter'){commit()} else if(e.key==='Escape'){renderList(section)} });
+      input.addEventListener('blur', commit);
+    }
+
+    function deleteItem(section, id){
+      const idx = data[section].findIndex(x=>x.id===id);
+      if(idx===-1) return;
+      data[section].splice(idx,1);
+      save(); renderList(section);
+    }
+
+    function toggleDone(section, id){
+      const idx = data[section].findIndex(x=>x.id===id);
+      if(idx===-1) return;
+      data[section][idx].done = !data[section][idx].done;
+      save(); renderList(section);
+    }
+
+    function moveItemWithin(section, fromId, toId){
+      const arr = data[section];
+      const fromIdx = arr.findIndex(x=>x.id===fromId);
+      const toIdx = arr.findIndex(x=>x.id===toId);
+      if(fromIdx<0||toIdx<0||fromIdx===toIdx) return;
+      const [m] = arr.splice(fromIdx,1);
+      const insertAt = toIdx < fromIdx ? toIdx : toIdx+1;
+      arr.splice(insertAt,0,m);
+      save(); renderList(section);
+    }
+    function moveItemToEnd(section, fromId){
+      const arr = data[section];
+      const fromIdx = arr.findIndex(x=>x.id===fromId);
+      if(fromIdx<0) return;
+      const [m] = arr.splice(fromIdx,1);
+      arr.push(m);
+      save(); renderList(section);
+    }
+
+    // UI wiring: tabs
+    document.addEventListener('click', (e)=>{
+      const t = e.target;
+      if(t.matches('.tab') || t.closest('.tab')){
+        const tab = t.closest('.tab');
+        const key = tab.dataset.tab;
+        document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active', x===tab));
+        document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.dataset.section===key));
+      }
+    });
+
+    // add buttons
+    document.querySelectorAll('[data-add]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const s = btn.dataset.add;
+        const input = $(`#${s}Input`);
+        if(input && input.value.trim()){ addItem(s, input.value.trim()); input.value=''; input.focus(); }
+      });
+    });
+
+    // enter to add
+    ['focus','exams','goals','files'].forEach(s=>{
+      const input = $(`#${s}Input`);
+      if(input) input.addEventListener('keydown', e=>{ if(e.key==='Enter'){ if(input.value.trim()){ addItem(s, input.value.trim()); input.value=''; } }});
+    });
+
+    // global FAB focuses active input
+    document.getElementById('globalFab').addEventListener('click', ()=>{
+      const activeTab = document.querySelector('.tab.active').dataset.tab;
+      const input = $(`#${activeTab}Input`);
+      if(input){ input.focus(); input.scrollIntoView({behavior:'smooth',block:'center'}); }
+    });
+
+    // theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    let isDark = localStorage.getItem('pp_theme') === 'dark';
+    function applyTheme(d){
+      document.documentElement.setAttribute('data-theme', d? 'dark' : ''); localStorage.setItem('pp_theme', d? 'dark' : 'light');
+      document.getElementById('themeIcon').setAttribute('data-feather', d? 'sun' : 'moon'); feather.replace();
+    }
+    themeToggle.addEventListener('click', ()=>{ isDark = !isDark; applyTheme(isDark); });
+    applyTheme(isDark);
+
+    // initial render & ensure feather icons
+    renderAll();
+    feather.replace();
   </script>
 </body>
 </html>
